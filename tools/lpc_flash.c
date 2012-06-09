@@ -30,6 +30,9 @@ int main (int argc, char *argv[])
     
     rd = read(in_fd, buf, 32768);
 
+    if (!rd || rd < 32)
+        return -4;
+
     for (x = 0; x < 7; x++)
         sum += buf[x];
 
