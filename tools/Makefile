@@ -1,3 +1,3 @@
-all: lpc_bless 
+all: lpc_flash 
 clean:
-	rm -f lpc_bless
+	rm -f lpc_flash
