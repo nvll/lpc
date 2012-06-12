@@ -16,7 +16,7 @@ SECTIONS {
 	}
 	. = ALIGN(4);
 	__data_rom = .;
-	. = 0x20000000;
+	. = 0x10000000;
 	__data_ram = .;
 	.data : AT ( __data_rom ) {
 			*(.data .data.*)
