@@ -1,41 +1,44 @@
 MKDIR = if [ ! -d $(dir $@) ]; then mkdir -p $(dir $@); fi
 GET_PARENT = $(dir $(lastword $(MAKEFILE_LIST)))
 
-CC = arm-elf-gcc
-LD = arm-elf-ld
-OBJDUMP = arm-elf-objdump
-OBJCOPY = arm-elf-objcopy
+CC = arm-eabi-gcc
+LD = arm-eabi-ld
+OBJDUMP = arm-eabi-objdump
+OBJCOPY = arm-eabi-objcopy
+OBJS = 
 OUTPUT := main
 OBJDIR := build
-CFLAGS = -std=c99 -mcpu=cortex-m3 -mthumb -O2 -Wall -W -nostartfiles -nostdlib -fdata-sections -ffunction-sections
-LDFLAGS = -gc-sections -T link.ld 
-DEFINES = 
-INCLUDES := -Iinclude
+CFLAGS = -std=c99 -mcpu=cortex-m3 -mthumb -O2 -Wall -W -nostartfiles -nostdlib -fno-builtin -fdata-sections -ffunction-sections
+LDFLAGS = -gc-sections -T cortex-m3.ld 
+DEFINES = -D STACK_SIZE=2048
+INCLUDES := -Iinclude  
 ECHO = @ 
 
-include CMSISv1p30_LPC13xx/rules.mk
+include lpc13xx/CMSISv1p30_LPC13xx/rules.mk
+$(warning $(OBJS))
+include lpc13xx/rules.mk
+$(warning $(OBJS))
+include cortex-m3/rules.mk
+$(warning $(OBJS))
 
 OBJS += \
-		vectors.o \
-		main.o \
+	main.o \
 
 
 OBJS := $(addprefix $(OBJDIR)/, $(OBJS))
 
-.PHONY: all
-
 all: $(OBJS)
 	$(ECHO) echo "linking $(OUTPUT)"
 	$(ECHO) $(LD) $(LDFLAGS) $^ -o $(OUTPUT)
-	$(ECHO) $(OBJDUMP) -S $(OUTPUT) > $(OUTPUT).sym 
+	$(ECHO) $(OBJDUMP) -Dlx $(OUTPUT) > $(OUTPUT).dump 
 	$(ECHO) $(OBJCOPY) -O binary $(OUTPUT) $(OUTPUT).bin
 
 $(OBJDIR)/%.o: %.c
 	@$(MKDIR)
-	$(ECHO) echo "compiling $<"
+	$(ECHO) echo "compiling $< from $@"
 	$(ECHO) $(CC) $(DEFINES) $(CFLAGS) $(INCLUDES) $< -c -o $@
 	
 
 clean:
-	rm -rf $(OBJDIR) $(OUTPUT) $(OUTPUT).bin $(OUTPUT).sym
+	rm -rf $(OBJDIR) $(OUTPUT) $(OUTPUT).bin $(OUTPUT).dump
 

@@ -1,0 +1,6 @@
+LOCAL_DIR := $(GET_PARENT)
+
+INCLUDES += -I$(LOCAL_DIR)
+
+OBJS += \
+	$(LOCAL_DIR)/cortex-m3.o

@@ -1,11 +1,14 @@
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 
-ENTRY(_start)
+ENTRY(cortex_m3_start)
 SECTIONS {
-	. = 0;
+	. = 0x00500000;
 	.text.vector_table : {
 		KEEP (*(.text.vector_table))
+	}
+	.text.vector_table_platform : {
+		KEEP (*(.text.vector_table_platform))
 	}
 
 	.text : {
