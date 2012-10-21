@@ -3,7 +3,7 @@ OUTPUT_ARCH(arm)
 
 ENTRY(cortex_m3_start)
 SECTIONS {
-	. = 0x00500000;
+	. = %CM3_ROMBASE%;
 	.text.vector_table : {
 		KEEP (*(.text.vector_table))
 	}
@@ -19,7 +19,7 @@ SECTIONS {
 	}
 	. = ALIGN(4);
 	__data_rom = .;
-	. = 0x10000000;
+	. = %CM3_MEMBASE%;
 	__data_ram = .;
 	.data : AT ( __data_rom ) {
 			*(.data .data.*)
@@ -27,4 +27,5 @@ SECTIONS {
 	. = ALIGN(4);
 	__data_end = .;
 	.bss : {*(.bss .bss.*)}
+	.debug_info : {*(.debug_line)}
 }

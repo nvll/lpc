@@ -2,7 +2,6 @@
 #include <LPC13xx.h>
 #include <gpio.h>
 #include <uart.h>
-#include <string.h>
 
 void spin(int ms)
 {
@@ -14,23 +13,17 @@ int main(void)
 {
 	SystemInit();
 	
-    uart_init();
+    //uart_init();
     
-    gpio_config(3, 0, GPIO_OUTPUT);
-    gpio_config(3, 1, GPIO_OUTPUT);
-    gpio_config(3, 2, GPIO_OUTPUT);
-    gpio_config(3, 3, GPIO_OUTPUT);
+    gpio_config(GPIO(2, GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7), GPIO_OUTPUT);
+    gpio_config(GPIO(3, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3), GPIO_OUTPUT);
     
-    SysTick->CTRL = (1 << 0) | (1 << 1) | (1 << 2);
-    SysTick->LOAD = 5;
-    SysTick->VAL = 5;
-    int value = 0;
+    //SGPIO(ysTick->CTRL )= (1 << 0) | (1 << 1) | (1 << 2);
+    //SysTick->LOAD = 5;
+    //SysTick->VAL = 5;
+    unsigned int value = 0;
     while (1) {
-        for (int x = 0; x < 4; x++) {
-            spin(1000);
-            gpio_set(3, x, value);
-
-        }
-        value = !value;
+		spin(1000);
+		led_set_binary(value++);
     }
 }

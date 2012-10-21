@@ -25,22 +25,18 @@ int main (int argc, char *argv[])
         return -3;
 	}
     
-	printf("pre read\n");
     rd = read(in_fd, buf, sizeof(buf));
 
-	printf("reading\n");
     if (!rd || rd < 32) {
         return -4;
 	}
 
-	printf("pre loop\n");
     for (x = 0; x < 7; x++)
         sum += buf[x];
 
     buf[7] = -sum;
     close(in_fd);
 
-	printf("writing\n");
     write(out_fd, buf, rd);
     fsync(out_fd);
     close(out_fd);

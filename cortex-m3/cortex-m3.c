@@ -1,13 +1,11 @@
 #include <stdint.h>
 #include <cortex-m3.h>
 
-static int systick_cnt = 0;
 static uint8_t cortex_m3_stack[STACK_SIZE];
 typedef void * irq_handler_t;
 extern void main();
 
 void cortex_m3_start(void) {
-	(void)systick_cnt; // ignore warnings
 	main();
 }
 
