@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <cortex-m3.h>
 
-static uint8_t cortex_m3_stack[STACK_SIZE];
+static uint8_t cortex_m3_stack[CM3_STACKSIZE];
 typedef void * irq_handler_t;
 extern void main();
 

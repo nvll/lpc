@@ -1,5 +1,6 @@
 #include <LPC13xx.h>
 #include <uart.h>
+#include <iocon.h>
 
 /* 
     LPC13xx uses 
@@ -12,31 +13,27 @@
     CTS - PIO0_7 - clear to send
 */
 
-extern void spin(int ms);
 void uart_init()
 {
     // ioconfig setup
-    LPC_IOCON->PIO1_6 &= ~0x7; // function RXD
-    LPC_IOCON->PIO1_6 |= 0x1; // function RXD
-    LPC_IOCON->PIO1_7 &= ~0x7; // function TXD
-    LPC_IOCON->PIO1_7 |= 0x1; // function TXD
+    LPC_IOCON->PIO1_6 = IOCON_FUNC_1; // function RXD
+    LPC_IOCON->PIO1_7 = IOCON_FUNC_1; // function TXD
 
     // enable uart
     LPC_SYSCON->SYSAHBCLKCTRL |= LPC13XX_UART_AHB_CLK_ENABLE;
 
     // 115200
     LPC_SYSCON->UARTCLKDIV = 0x128;
-    spin(1); // Need to wait for clock change to take effect?
 
     LPC_UART->LCR = LPC13XX_UART_LCR_8BIT;
     LPC_UART->FCR = LPC13XX_UART_FIFO_ENABLE | LPC13XX_UART_RX_RST | LPC13XX_UART_TX_RST;
 
 }
 
-void uart_putc(char c)
+void _putc(char c)
 {
     if (c == '\n')
-        uart_putc('\r');
+        _putc('\r');
 
     while (!(LPC_UART->LSR & LPC13XX_UART_THRE))
         ;;
