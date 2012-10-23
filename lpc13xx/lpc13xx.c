@@ -13,7 +13,6 @@ void spin(int ms)
 
 void systick_handler(void)
 {
-	printf("systick called: 0x%X\n", SysTick->VAL);
 }
 
 int main(void)
@@ -25,8 +24,9 @@ int main(void)
 	gpio_config(GPIO(2, GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7), GPIO_OUTPUT);
 	gpio_config(GPIO(3, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3), GPIO_OUTPUT);
 
-	int ret = SysTick_Config(1);
+	int ret = SysTick_Config(100);
 	printf("systick conf returned %d\n", ret);
+	printf("systick: CTRL: 0x%X\n", SysTick->CTRL);
 
 	uint32_t value = 0;
 	while (1) {

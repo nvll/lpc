@@ -68,6 +68,28 @@ void _printf_int(int val)
 	_puts(buf);
 }
 
+// TODO: find a way to merge this with _printf_int
+void _printf_uint(uint32_t val)
+{
+	char buf[10];
+	int digit, n = val, pos = 0, len = 0;
+
+	do {
+		len++;
+	} while ((n /= 10));
+
+	pos = len - 1;
+	
+	do {
+		digit = val % 10;
+		buf[pos--] = '0' + digit;
+	} while ((val /= 10));
+	
+	buf[len] = '\0';
+	_puts(buf);
+}
+	
+
 
 int printf(const char * restrict format, ...)
 {
@@ -93,6 +115,9 @@ int printf(const char * restrict format, ...)
 				break;
 			case 'd':
 				_printf_int(va_arg(ap, int));
+				break;
+			case 'u':
+				_printf_uint(va_arg(ap, unsigned int));
 				break;
 			default:
 				putc(c);
