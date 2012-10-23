@@ -10,6 +10,11 @@ void cortex_m3_start(void)
 	main();
 }
 
+// 
+void __WEAK puts(const char *s)
+{
+}
+
 DEFINE_HANDLER(nmi);
 DEFINE_HANDLER(hardfault);
 DEFINE_HANDLER(memmanage);

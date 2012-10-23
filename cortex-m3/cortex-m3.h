@@ -6,6 +6,7 @@
 #define DEFINE_HANDLER(x) \
 void __WEAK x##_handler(void) \
 { \
+	puts("##x## handler called"); \
 }
 
 inline void spin(int ms)
