@@ -13,6 +13,7 @@ void cortex_m3_start(void)
 // 
 void __WEAK puts(const char *s)
 {
+	(void)s;
 }
 
 DEFINE_HANDLER(nmi);
@@ -25,7 +26,7 @@ DEFINE_HANDLER(debug);
 DEFINE_HANDLER(pendsv);
 DEFINE_HANDLER(systick);
 
-
+extern void printf(const char * restrict format, ...);
 const irq_handler_t __SECTION(".text.vector_table") vector_table[] = {
 	cortex_m3_stack + sizeof(cortex_m3_stack), // ARM stack grows downward
 	cortex_m3_start,

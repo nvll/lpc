@@ -35,15 +35,39 @@ int strlen(const char *s)
 static char hex_tbl[] = "0123456789abcdef";
 void _printf_hex(unsigned int val, int caps)
 {
-	while (val) {
-		uint8_t masked = (val >> 28);
-		if(masked) {
-			int hex = hex_tbl[masked];
-			putc((caps) ? toupper(hex) : hex);
-		}
+	char c;
+	do {
+		c = hex_tbl[val >> 28];
+		putc((caps) ? toupper(c) : c);
 		val <<= 4;
-	}
+	} while (val);
 }
+
+void _printf_int(int val)
+{
+	char buf[11];
+	int digit, n = val, pos = 0, len = 0;
+
+	do {
+		len++;
+	} while ((n /= 10));
+
+	if(val < 0) {
+		putc('-');
+		val *= -1;
+	}
+
+	pos = len - 1;
+	
+	do {
+		digit = val % 10;
+		buf[pos--] = '0' + digit;
+	} while ((val /= 10));
+	
+	buf[len] = '\0';
+	_puts(buf);
+}
+
 
 int printf(const char * restrict format, ...)
 {
@@ -58,19 +82,22 @@ int printf(const char * restrict format, ...)
 			putc(c);
 			continue;
 		}
-
 		switch((c = *format++)) {
-		case 's':
-			_puts(va_arg(ap, char *));
-			break;
-		case 'X':
-			arg = 1;
-		case 'x':
-			_printf_hex(va_arg(ap, uint32_t), arg);
-			break;
-		default:
-			putc(c);
+			case 's':
+				_puts(va_arg(ap, char *));
+				break;
+			case 'X':
+				arg = 1;
+			case 'x':
+				_printf_hex(va_arg(ap, uint32_t), arg);
+				break;
+			case 'd':
+				_printf_int(va_arg(ap, int));
+				break;
+			default:
+				putc(c);
 		}
+		
 	}
 	va_end(ap);
 	return 0;

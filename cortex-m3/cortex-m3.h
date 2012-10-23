@@ -3,10 +3,13 @@
 
 #define __WEAK			__attribute__((weak))
 #define __SECTION(x)	__attribute__((section(x)))
+#define HANDLER(x) &x##_handler
 #define DEFINE_HANDLER(x) \
 void __WEAK x##_handler(void) \
 { \
-	puts("##x## handler called"); \
+	puts(__PRETTY_FUNCTION__); \
+	while(1) \
+		;; \
 }
 
 inline void spin(int ms)
@@ -15,5 +18,4 @@ inline void spin(int ms)
         __asm__ ("nop");
 }
 
-#define HANDLER(x) &x##_handler
 #endif

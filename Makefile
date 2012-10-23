@@ -24,10 +24,6 @@ include lpc13xx/CMSISv1p30_LPC13xx/rules.mk
 include lpc13xx/rules.mk
 include alibc/rules.mk
 
-OBJS += \
-	main.o \
-
-
 OBJS := $(addprefix $(BUILDDIR)/, $(OBJS))
 
 buildall: $(OBJS)

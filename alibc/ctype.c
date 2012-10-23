@@ -13,3 +13,10 @@ int toupper(int c)
 		return (c - 31);
 	return c;
 }
+
+int isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return 1;
+	return 0;
+}
