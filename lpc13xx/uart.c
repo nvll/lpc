@@ -1,4 +1,5 @@
 #include <LPC13xx.h>
+#include <cortex-m3.h>
 #include <uart.h>
 #include <iocon.h>
 
@@ -27,6 +28,8 @@ void uart_init()
 
     LPC_UART->LCR = LPC13XX_UART_LCR_8BIT;
     LPC_UART->FCR = LPC13XX_UART_FIFO_ENABLE | LPC13XX_UART_RX_RST | LPC13XX_UART_TX_RST;
+
+	spin(1); // without this the uart eats the first character we print on setup. Race?
 
 }
 
