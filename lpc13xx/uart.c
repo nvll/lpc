@@ -3,8 +3,8 @@
 #include <uart.h>
 #include <iocon.h>
 
-/* 
-    LPC13xx uses 
+/*
+    LPC13xx uses
     RTS - PIO1_5 - direction control pin
     RXD - PIO1_6 - serial input
     TXD - PIO1_7 - serial output
@@ -16,18 +16,18 @@
 
 void uart_init()
 {
-    // ioconfig setup
-    LPC_IOCON->PIO1_6 = IOCON_FUNC_1; // function RXD
-    LPC_IOCON->PIO1_7 = IOCON_FUNC_1; // function TXD
+	// ioconfig setup
+	LPC_IOCON->PIO1_6 = IOCON_FUNC_1; // function RXD
+	LPC_IOCON->PIO1_7 = IOCON_FUNC_1; // function TXD
 
-    // enable uart
-    LPC_SYSCON->SYSAHBCLKCTRL |= LPC13XX_UART_AHB_CLK_ENABLE;
+	// enable uart
+	LPC_SYSCON->SYSAHBCLKCTRL |= LPC13XX_UART_AHB_CLK_ENABLE;
 
-    // 115200
-    LPC_SYSCON->UARTCLKDIV = 0x128;
+	// 115200
+	LPC_SYSCON->UARTCLKDIV = 0x128;
 
-    LPC_UART->LCR = LPC13XX_UART_LCR_8BIT;
-    LPC_UART->FCR = LPC13XX_UART_FIFO_ENABLE | LPC13XX_UART_RX_RST | LPC13XX_UART_TX_RST;
+	LPC_UART->LCR = LPC13XX_UART_LCR_8BIT;
+	LPC_UART->FCR = LPC13XX_UART_FIFO_ENABLE | LPC13XX_UART_RX_RST | LPC13XX_UART_TX_RST;
 
 	spin(1); // without this the uart eats the first character we print on setup. Race?
 
@@ -35,12 +35,12 @@ void uart_init()
 
 void _putc(char c)
 {
-    if (c == '\n')
-        _putc('\r');
+	if (c == '\n')
+		_putc('\r');
 
-    while (!(LPC_UART->LSR & LPC13XX_UART_THRE))
-        ;;
-    
+	while (!(LPC_UART->LSR & LPC13XX_UART_THRE))
+		;;
 
-    LPC_UART->THR = c;
+
+	LPC_UART->THR = c;
 }

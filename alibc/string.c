@@ -16,7 +16,7 @@ void _puts(const char *s)
 	while (s[x] != '\0')
 		putc(s[x++]);
 }
-	
+
 void puts(const char *s)
 {
 	_puts(s);
@@ -35,7 +35,7 @@ int strlen(const char *s)
 static char hex_tbl[] = "0123456789abcdef";
 void _printf_hex(unsigned int val, int caps)
 {
-	while (val) { 
+	while (val) {
 		uint8_t masked = (val >> 28);
 		if(masked) {
 			int hex = hex_tbl[masked];
@@ -53,19 +53,25 @@ int printf(const char * restrict format, ...)
 	va_start(ap, format);
 	while((c = *format++)) {
 		int arg = 0;
-		
+
 		if (c != '%') {
 			putc(c);
 			continue;
 		}
 
 		switch((c = *format++)) {
-			case 's': _puts(va_arg(ap, char *)); break;
-			case 'X': arg = 1;
-			case 'x': _printf_hex(va_arg(ap, uint32_t), arg); break;
-			default: putc(c);
+		case 's':
+			_puts(va_arg(ap, char *));
+			break;
+		case 'X':
+			arg = 1;
+		case 'x':
+			_printf_hex(va_arg(ap, uint32_t), arg);
+			break;
+		default:
+			putc(c);
 		}
-	} 
+	}
 	va_end(ap);
 	return 0;
 }

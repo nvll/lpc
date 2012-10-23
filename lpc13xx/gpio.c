@@ -2,23 +2,23 @@
 
 // Some of this could be done by indexing right off GPIOBASE0
 LPC_GPIO_TypeDef *gpio_get_base (int port)
-{   
-    if (port == 0)
-        return LPC_GPIO0;
-    else if (port == 1)
-        return LPC_GPIO1;
-    else if (port == 2)
-        return LPC_GPIO2;
-    else if (port == 3)
-        return LPC_GPIO3;
+{
+	if (port == 0)
+		return LPC_GPIO0;
+	else if (port == 1)
+		return LPC_GPIO1;
+	else if (port == 2)
+		return LPC_GPIO2;
+	else if (port == 3)
+		return LPC_GPIO3;
 
-    return 0;
+	return 0;
 }
 
 void gpio_config(unsigned int gpio, int dir)
 {
 	unsigned int port = GPIO_PORT(gpio), pin = GPIO_PIN(gpio);
-    LPC_GPIO_TypeDef *gpio_base = gpio_get_base(port);
+	LPC_GPIO_TypeDef *gpio_base = gpio_get_base(port);
 	if (dir) {
 		gpio_base->DIR |= pin;
 	} else {
@@ -35,14 +35,14 @@ void gpio_config(unsigned int gpio, int dir)
 void gpio_set(unsigned int gpio, unsigned int value)
 {
 	unsigned int port = GPIO_PORT(gpio), pin = GPIO_PIN(gpio);
-    LPC_GPIO_TypeDef *gpio_base = gpio_get_base(port);
+	LPC_GPIO_TypeDef *gpio_base = gpio_get_base(port);
 	gpio_base->MASKED_ACCESS[pin] = (value) ? 0xFFFF : 0x0;
 }
 
 unsigned int gpio_get(unsigned int gpio)
 {
 	unsigned int port = GPIO_PORT(gpio), pin = GPIO_PIN(gpio);
-    LPC_GPIO_TypeDef *gpio_base = gpio_get_base(port);
+	LPC_GPIO_TypeDef *gpio_base = gpio_get_base(port);
 	return gpio_base->MASKED_ACCESS[pin];
 }
 
